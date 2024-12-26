@@ -49,4 +49,38 @@ class LectureTest {
         }
     }
 
+    @Nested
+    @DisplayName("특강 신청 가능 여부 반환")
+    inner class IsAvailableApply {
+        @Test
+        fun `특강 신청 수가 최대 정원 수가 미만인 경우 True를 반환한다`() {
+            // given
+            val lecture = TestFixtureUtils.lecture(
+                maxCapacity = 30,
+                applicationCount = 29,
+            )
+
+            // when
+            val result = lecture.isAvailableApply()
+
+            // then
+            assertThat(result).isTrue()
+        }
+
+        @Test
+        fun `특강 신청 수가 최대 정원 수 이상인 경우 False를 반환한다`() {
+            // given
+            val lecture = TestFixtureUtils.lecture(
+                maxCapacity = 30,
+                applicationCount = 30,
+            )
+
+            // when
+            val result = lecture.isAvailableApply()
+
+            // then
+            assertThat(result).isFalse()
+        }
+    }
+
 }

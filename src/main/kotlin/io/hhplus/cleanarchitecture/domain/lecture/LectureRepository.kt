@@ -4,6 +4,7 @@ import io.hhplus.cleanarchitecture.domain.lecture.model.Lecture
 import java.time.LocalDate
 
 interface LectureRepository {
+
     fun save(lecture: Lecture): Lecture
 
     fun isExistById(lectureId: Long): Boolean
@@ -13,4 +14,5 @@ interface LectureRepository {
     fun getByIdIn(lectureIds: List<Long>): List<Lecture>
 
     fun getByDate(date: LocalDate): List<Lecture>
+
 }

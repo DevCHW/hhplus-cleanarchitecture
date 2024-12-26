@@ -19,6 +19,15 @@ class LectureService(
     }
 
     /**
+     * 신청 가능 특강 목록 조회
+     */
+    @Transactional(readOnly = true)
+    fun getAvailableLectures(date: LocalDate): List<Lecture> {
+        return lectureRepository.getByDate(date)
+            .filter { it.isAvailableApply() }
+    }
+
+    /**
      * ID에 해당하는 특강 조회
      */
     @Transactional(readOnly = true)

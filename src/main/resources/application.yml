@@ -1,2 +1,33 @@
 spring:
   application.name: hhplus-clean-architecture-lecture
+  profiles:
+    default: local
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+---
+spring:
+  profiles:
+    active: local
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/hhplus_clean_architecture_lecture?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        show_sql: true

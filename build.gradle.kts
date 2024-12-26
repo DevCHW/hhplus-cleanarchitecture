@@ -6,6 +6,8 @@ plugins {
     kotlin("plugin.jpa") version "1.9.25"
 }
 
+val springMockkVersion = "4.0.2"
+
 group = "io.hhplus.cleanarchitecture"
 version = "0.0.1-SNAPSHOT"
 
@@ -27,6 +29,9 @@ dependencies {
     // spring data jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    // spring validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
     // jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
@@ -43,6 +48,9 @@ dependencies {
     // junit
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // mockk
+    testImplementation("com.ninja-squad:springmockk:${springMockkVersion}")
 
     // test containers
     testImplementation("org.springframework.boot:spring-boot-testcontainers")

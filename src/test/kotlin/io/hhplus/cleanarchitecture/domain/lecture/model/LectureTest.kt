@@ -20,7 +20,7 @@ class LectureTest {
 
             val lecture = TestFixtureUtils.lecture(
                 maxCapacity = maxCapacity,
-                applyCount = applyCount
+                applicationCount = applyCount
             )
 
             // when
@@ -37,7 +37,7 @@ class LectureTest {
 
             val lecture = TestFixtureUtils.lecture(
                 maxCapacity = maxCapacity,
-                applyCount = 10
+                applicationCount = 10
             )
 
             // when & then

@@ -134,8 +134,7 @@ class LectureCoreRepositoryTest(
         val result = lectureCoreRepository.getByDate(targetDate)
 
         // then
-        assertThat(result)
-            .hasSize(2)
+        assertThat(result).hasSize(2)
     }
 
     @Test

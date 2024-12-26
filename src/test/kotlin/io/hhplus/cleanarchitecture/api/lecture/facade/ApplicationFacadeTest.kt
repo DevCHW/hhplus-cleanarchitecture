@@ -79,7 +79,7 @@ class ApplicationFacadeTest(
             val lecture = lectureRepository.save(
                 TestFixtureUtils.lecture(
                     maxCapacity = 30,
-                    applyCount = 30
+                    applicationCount = 30
                 )
             )
 
@@ -98,7 +98,7 @@ class ApplicationFacadeTest(
             val lecture = lectureRepository.save(
                 TestFixtureUtils.lecture(
                     maxCapacity = maxCapacity,
-                    applyCount = 0
+                    applicationCount = 0
                 )
             )
 

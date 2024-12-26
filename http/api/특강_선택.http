@@ -1,0 +1,8 @@
+### 특강 선택
+# Request Parameters
+@date = 2024-12-24
+
+# API URL
+GET {{host}}/api/lectures/available?date={{date}}
+# Request Header
+Content-Type: application/json

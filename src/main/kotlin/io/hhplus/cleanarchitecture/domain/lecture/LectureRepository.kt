@@ -15,4 +15,5 @@ interface LectureRepository {
 
     fun getByDate(date: LocalDate): List<Lecture>
 
+    fun getByIdWithLock(lectureId: Long): Lecture
 }

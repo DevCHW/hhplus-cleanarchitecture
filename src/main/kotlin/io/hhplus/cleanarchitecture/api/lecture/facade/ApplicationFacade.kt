@@ -29,7 +29,7 @@ class ApplicationFacade(
         }
 
         // 신청 정원 검증
-        val lecture = lectureService.getById(lectureId)
+        val lecture = lectureService.getByIdWithLock(lectureId)
         if (!lecture.isAvailableApply()) {
             throw CoreApiException(ErrorCode.CAPACITY_EXCEEDED)
         }

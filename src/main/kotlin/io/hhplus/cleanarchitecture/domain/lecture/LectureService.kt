@@ -43,4 +43,11 @@ class LectureService(
         return lectureRepository.getByIdIn(lectureIds)
     }
 
+    /**
+     * Lock을 수행하며 ID에 해당하는 특강 조회
+     */
+    @Transactional(readOnly = true)
+    fun getByIdWithLock(lectureId: Long): Lecture {
+        return lectureRepository.getByIdWithLock(lectureId)
+    }
 }

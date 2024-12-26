@@ -4,14 +4,12 @@ import com.example.ktboard.domain.error.CoreApiException
 import io.hhplus.cleanarchitecture.domain.lecture.ApplicationRepository
 import io.hhplus.cleanarchitecture.domain.lecture.LectureRepository
 import io.hhplus.cleanarchitecture.support.IntegrationTestSupport
-import io.hhplus.cleanarchitecture.support.concurrent.ConcurrencyTestUtils
 import io.hhplus.cleanarchitecture.support.fixture.TestFixtureUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.util.concurrent.atomic.AtomicInteger
 
 class ApplicationFacadeTest(
     private val applicationFacade: ApplicationFacade,

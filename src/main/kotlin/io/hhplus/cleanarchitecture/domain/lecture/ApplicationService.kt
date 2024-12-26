@@ -10,6 +10,14 @@ class ApplicationService(
 ) {
 
     /**
+     * 특강 신청 완료 목록 조회
+     */
+    @Transactional(readOnly = true)
+    fun getAllByUserId(userId: Long): List<LectureApplication> {
+        return applicationRepository.getAllApplicationsByUserId(userId)
+    }
+
+    /**
      * 특강 신청 생성
      */
     @Transactional

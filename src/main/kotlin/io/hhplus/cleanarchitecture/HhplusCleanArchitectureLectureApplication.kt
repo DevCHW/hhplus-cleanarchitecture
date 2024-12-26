@@ -1,4 +1,4 @@
-package io.hhplus.cleanarchitecture.lecture
+package io.hhplus.cleanarchitecture
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

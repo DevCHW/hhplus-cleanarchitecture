@@ -1,0 +1,13 @@
+### 특강 신청
+# Path Variable
+@lectureId=1
+
+# API URL
+POST {{host}}/api/lectures/{{lectureId}}/application
+# Request Header
+Content-Type: application/json
+
+# Request Body
+{
+  "userId": 1
+}

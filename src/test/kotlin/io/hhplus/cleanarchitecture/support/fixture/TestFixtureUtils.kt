@@ -12,7 +12,7 @@ class TestFixtureUtils {
             maxCapacity: Int = 30,
             lecturer: String = "강연자1",
             lectureDatetime: LocalDateTime = LocalDateTime.now(),
-            applyCount: Int = 0,
+            applicationCount: Int = 0,
         ): Lecture {
             return Lecture(
                 id = id,
@@ -20,7 +20,7 @@ class TestFixtureUtils {
                 maxCapacity = maxCapacity,
                 lecturer = lecturer,
                 lectureDatetime = lectureDatetime,
-                applicationCount = applyCount,
+                applicationCount = applicationCount,
             )
         }
 

@@ -74,4 +74,85 @@ class LectureCoreRepositoryTest(
             assertThat(result).isFalse()
         }
     }
+
+    @Test
+    fun `특강 정보를 저장할 수 있다`() {
+        // given
+        val lecture = TestFixtureUtils.lecture()
+
+        // when
+        lectureCoreRepository.save(lecture)
+        val result = lectureJpaRepository.findByIdOrThrow(lecture.id)
+
+        // then
+        assertThat(result.title).isEqualTo(lecture.title)
+        assertThat(result.applicationCount).isEqualTo(lecture.applicationCount)
+        assertThat(result.maxCapacity).isEqualTo(lecture.maxCapacity)
+        assertThat(result.lecturer).isEqualTo(lecture.lecturer)
+        assertThat(result.lectureDatetime).isEqualTo(lecture.lectureDatetime)
+    }
+
+    @Test
+    fun `날짜에 해당하는 특강 목록을 조회할 수 있다`() {
+        // given
+        val targetDate = LocalDate.of(2024, 12, 28)
+
+        lectureJpaRepository.save(
+            TestFixtureUtils.lecture(
+                lectureDatetime = LocalDateTime.of(LocalDate.of(2024, 12, 28), LocalTime.MIN)
+            )
+        )
+
+        lectureJpaRepository.save(
+            TestFixtureUtils.lecture(
+                lectureDatetime = LocalDateTime.of(LocalDate.of(2024, 12, 28), LocalTime.MAX.withNano(999999000))
+            )
+        )
+
+        lectureJpaRepository.save(
+            TestFixtureUtils.lecture(
+                lectureDatetime = LocalDateTime.of(LocalDate.of(2024, 12, 28).plusDays(1), LocalTime.MIN)
+            )
+        )
+
+        println("LocalDateTime.of(targetDate, LocalTime.MIN) = ${LocalDateTime.of(targetDate, LocalTime.MIN)}")
+        println("LocalDateTime.of(targetDate, LocalTime.MAX) = ${LocalDateTime.of(targetDate, LocalTime.MAX)}")
+        println(
+            "LocalDateTime.of(targetDate.plusDays(1), LocalTime.MIN) = ${
+                LocalDateTime.of(
+                    targetDate.plusDays(1),
+                    LocalTime.MIN
+                )
+            }"
+        )
+
+        // when
+        val results = lectureJpaRepository.findAll()
+        for (result in results) {
+            println("result.lectureDatetime = ${result.lectureDatetime}")
+        }
+        val result = lectureCoreRepository.getByDate(targetDate)
+
+        // then
+        assertThat(result).hasSize(2)
+    }
+
+    @Test
+    fun `특강 ID 목록에 해당하는 특강 목록을 조회할 수 있다`() {
+        // given
+        val lectures = lectureJpaRepository.saveAll(
+            listOf(
+                TestFixtureUtils.lecture(),
+                TestFixtureUtils.lecture(),
+                TestFixtureUtils.lecture(),
+            )
+        )
+        val lectureIds = lectures.map { it.id }
+
+        // when
+        val result = lectureCoreRepository.getByIdIn(lectureIds)
+
+        // then
+        assertThat(result).hasSize(lectures.size)
+    }
 }

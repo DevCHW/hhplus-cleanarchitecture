@@ -2,6 +2,7 @@ package io.hhplus.cleanarchitecture.domain.lecture
 
 import io.hhplus.cleanarchitecture.domain.lecture.model.LectureApplication
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 @Service
@@ -34,7 +35,7 @@ class ApplicationService(
     /**
      * 특강 신청 존재 여부 조회
      */
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     fun isExistBy(lectureId: Long, userId: Long): Boolean {
         return applicationRepository.isExistBy(lectureId, userId)
     }

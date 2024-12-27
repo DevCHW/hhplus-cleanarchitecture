@@ -4,6 +4,7 @@ import io.hhplus.cleanarchitecture.domain.lecture.LectureRepository
 import io.hhplus.cleanarchitecture.domain.lecture.model.Lecture
 import io.hhplus.cleanarchitecture.infra.storage.core.lecture.jpa.LectureJpaRepository
 import io.hhplus.cleanarchitecture.infra.storage.findByIdOrThrow
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
 import java.time.LocalTime
@@ -31,5 +32,9 @@ class LectureCoreRepository(
 
     override fun getByIdIn(lectureIds: List<Long>): List<Lecture> {
         return lectureJpaRepository.findByIdIn(lectureIds)
+    }
+
+    override fun getByIdWithLock(lectureId: Long): Lecture {
+        return lectureJpaRepository.findWithLockById(lectureId)?: throw EntityNotFoundException("Entity not found. ID = $lectureId")
     }
 }

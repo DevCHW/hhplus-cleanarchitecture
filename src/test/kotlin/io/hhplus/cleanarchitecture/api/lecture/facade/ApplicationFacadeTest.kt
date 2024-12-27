@@ -4,12 +4,14 @@ import com.example.ktboard.domain.error.CoreApiException
 import io.hhplus.cleanarchitecture.domain.lecture.ApplicationRepository
 import io.hhplus.cleanarchitecture.domain.lecture.LectureRepository
 import io.hhplus.cleanarchitecture.support.IntegrationTestSupport
+import io.hhplus.cleanarchitecture.support.concurrent.ConcurrencyTestUtils
 import io.hhplus.cleanarchitecture.support.fixture.TestFixtureUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.util.concurrent.atomic.AtomicInteger
 
 class ApplicationFacadeTest(
     private val applicationFacade: ApplicationFacade,
@@ -77,7 +79,7 @@ class ApplicationFacadeTest(
             val lecture = lectureRepository.save(
                 TestFixtureUtils.lecture(
                     maxCapacity = 30,
-                    applyCount = 30
+                    applicationCount = 30
                 )
             )
 
@@ -87,6 +89,44 @@ class ApplicationFacadeTest(
             }
                 .isInstanceOf(CoreApiException::class.java)
                 .hasMessage("신청한 특강의 정원이 초과되었습니다.")
+        }
+
+        @Test
+        fun `동시에 동일한 특강에 대해 40명이 신청했을 때, 특강의 최대 정원 수 만큼만 신청에 성공해야 한다`() {
+            // given
+            val maxCapacity = 30
+            val lecture = lectureRepository.save(
+                TestFixtureUtils.lecture(
+                    maxCapacity = maxCapacity,
+                    applicationCount = 0
+                )
+            )
+
+            val userCount = 40
+            val actions = mutableListOf<Runnable>()
+            val successCount = AtomicInteger()
+            val errorCount = AtomicInteger()
+
+            // 각각 다른 유저 40명이 동일한 특강을 신청
+            for (i in 1..userCount) {
+                val userId = i.toLong()
+                val action = Runnable {
+                    try {
+                        applicationFacade.apply(userId, lecture.id)
+                        successCount.incrementAndGet() // 신청 성공 시 성공 카운트 증가
+                    } catch (e: CoreApiException) {
+                        errorCount.incrementAndGet() // 신청 실패 시 실패 카운트 증가
+                    }
+                }
+                actions.add(action)
+            }
+
+            // when
+            ConcurrencyTestUtils.executeConcurrently(actions)
+
+            // then
+            assertThat(successCount.get()).isEqualTo(30)
+            assertThat(errorCount.get()).isEqualTo(10)
         }
     }
 }

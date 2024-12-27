@@ -33,4 +33,5 @@ class LectureFacadeTest(
         assertThat(result)
             .hasSize(2)
     }
+
 }

@@ -6,6 +6,7 @@ import io.hhplus.cleanarchitecture.api.lecture.facade.dto.result.ApplyLectureRes
 import io.hhplus.cleanarchitecture.domain.lecture.ApplicationService
 import io.hhplus.cleanarchitecture.domain.lecture.LectureService
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 
 @Component
@@ -16,7 +17,7 @@ class ApplicationFacade(
     /**
      * 특강 신청
      */
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     fun apply(userId: Long, lectureId: Long): ApplyLectureResult {
         // 특강 존재 여부 검증
         if (!lectureService.isExist(lectureId)) {

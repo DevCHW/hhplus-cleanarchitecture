@@ -128,5 +128,30 @@ class ApplicationFacadeTest(
             assertThat(successCount.get()).isEqualTo(30)
             assertThat(errorCount.get()).isEqualTo(10)
         }
+
+        @Test
+        fun `동일한 유저 정보로 같은 특강을 동시에 5번 신청하더라도 한 번만 성공해야 한다`() {
+            // given
+            val userId = 1L
+            val lecture = lectureRepository.save(TestFixtureUtils.lecture())
+            val successCount = AtomicInteger()
+            val errorCount = AtomicInteger()
+
+            val action = Runnable {
+                try {
+                    applicationFacade.apply(userId, lecture.id)
+                    successCount.incrementAndGet()
+                } catch (e: Exception) {
+                    errorCount.incrementAndGet()
+                }
+            }
+
+            // when
+            ConcurrencyTestUtils.executeConcurrently(5, action)
+
+            // then
+            assertThat(successCount.get()).isEqualTo(1)
+            assertThat(errorCount.get()).isEqualTo(4)
+        }
     }
 }

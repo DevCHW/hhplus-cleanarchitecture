@@ -36,7 +36,7 @@ class ApplicationService(
     /**
      * 특강 신청 존재 여부 조회
      */
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = true)
     fun isExistBy(lectureId: Long, userId: Long): Boolean {
         return applicationRepository.isExistBy(lectureId, userId)
     }

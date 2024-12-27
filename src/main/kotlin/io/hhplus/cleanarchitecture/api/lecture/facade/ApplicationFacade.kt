@@ -23,18 +23,17 @@ class ApplicationFacade(
             throw CoreApiException(ErrorCode.LECTURE_NOT_FOUND)
         }
 
-        // 신청 여부 검증
-        if (applicationService.isExistBy(lectureId, userId)) {
-            throw CoreApiException(ErrorCode.ALREADY_APPLIED)
-        }
-
         // 신청 정원 검증
         val lecture = lectureService.getByIdWithLock(lectureId)
         if (!lecture.isAvailableApply()) {
             throw CoreApiException(ErrorCode.CAPACITY_EXCEEDED)
         }
-
         lecture.incrementApplyCount()
+
+        // 신청 여부 검증
+        if (applicationService.isExistBy(lectureId, userId)) {
+            throw CoreApiException(ErrorCode.ALREADY_APPLIED)
+        }
 
         val applicationLecture = applicationService.createApplication(userId, lectureId)
         return ApplyLectureResult(

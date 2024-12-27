@@ -2,6 +2,7 @@ package io.hhplus.cleanarchitecture.domain.lecture
 
 import io.hhplus.cleanarchitecture.domain.lecture.model.LectureApplication
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
